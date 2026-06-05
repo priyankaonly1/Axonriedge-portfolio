@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AxonRiedge — Logo & Brand Mark</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0e15; --panel:#121724; --panel-2:#161c2b; --line:rgba(255,255,255,.09); --line-2:rgba(255,255,255,.16);
+    --paper:#dbe2ee; --ink:#121927; --text:#eef1f7; --text-2:#97a0b2; --muted:#5d667d;
+    --accent:#3d7bff;
+    --fh:'Space Grotesk',system-ui,sans-serif; --fb:'IBM Plex Sans',system-ui,sans-serif; --fm:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin-inline:auto;padding:clamp(28px,5vw,72px)}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:var(--fh);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+  .eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:10px}
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);opacity:.5}
+  .mono{font-family:var(--fm)}
+
+  header.head{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:30px;border-bottom:1px solid var(--line);margin-bottom:56px}
+  header.head img{height:34px}
+  header.head .meta{font-family:var(--fm);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:right}
+
+  .lead{max-width:62ch;color:var(--text-2);font-size:1.08rem;margin:18px 0 0}
+  section{margin-top:72px}
+  .sec-title{display:flex;align-items:baseline;gap:14px;margin-bottom:28px}
+  .sec-title h2{font-size:1.5rem}
+  .sec-title .n{font-family:var(--fm);font-size:.72rem;color:var(--muted);letter-spacing:.14em}
+
+  /* preview tiles */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .tile{border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid;grid-template-rows:1fr auto}
+  .stage{display:grid;place-items:center;padding:54px 24px;min-height:220px}
+  .stage.light{background:var(--paper)}
+  .stage.dark{background:#0c1018}
+  .stage.blue{background:radial-gradient(circle at 50% 40%,#15233f,#0a0e18)}
+  .stage img.mk{width:96px;height:96px}
+  .stage img.lk{height:46px;width:auto}
+  .cap{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--panel);font-family:var(--fm);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+  .cap b{color:var(--text);font-weight:500}
+
+  /* swatches */
+  .sw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .sw{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .sw .chip{height:92px}
+  .sw .info{padding:14px 16px;background:var(--panel)}
+  .sw .info b{font-family:var(--fh);font-size:.95rem;display:block}
+  .sw .info span{font-family:var(--fm);font-size:.72rem;color:var(--text-2);letter-spacing:.04em}
+
+  /* clearspace */
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .card{border:1px solid var(--line);border-radius:16px;padding:28px;background:var(--panel)}
+  .card h3{font-size:1.05rem;margin-bottom:10px}
+  .card p{color:var(--text-2);font-size:.95rem}
+  .clearbox{margin-top:20px;border:1px dashed var(--line-2);border-radius:12px;padding:26px;display:flex;gap:22px;align-items:center;background:#0c1018}
+  .clearbox img{height:34px}
+  .minrow{display:flex;align-items:flex-end;gap:26px;margin-top:20px}
+  .minrow .m{display:grid;justify-items:center;gap:8px}
+  .minrow img{display:block}
+  .minrow span{font-family:var(--fm);font-size:.62rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+
+  /* downloads */
+  .dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .dl{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:border-color .2s,background .2s}
+  .dl:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .dl .name{display:flex;align-items:center;gap:14px;min-width:0}
+  .dl .name .px{width:40px;height:40px;border-radius:9px;background:#0c1018;display:grid;place-items:center;flex:none}
+  .dl .name .px img{width:24px;height:24px}
+  .dl .name b{font-family:var(--fh);font-size:.92rem;font-weight:500;display:block}
+  .dl .name span{font-family:var(--fm);font-size:.66rem;color:var(--muted);letter-spacing:.06em}
+  .links{display:flex;gap:8px;flex:none}
+  .links a{font-family:var(--fm);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border:1px solid var(--line-2);border-radius:7px;color:var(--text-2);transition:.2s}
+  .links a:hover{color:var(--accent);border-color:var(--accent)}
+
+  .how{border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,var(--panel),#0c1018);padding:30px}
+  .how ol{margin:14px 0 0;padding-left:20px;color:var(--text-2)}
+  .how li{margin:8px 0}
+  .how code{font-family:var(--fm);font-size:.85em;background:#0c1018;border:1px solid var(--line);padding:2px 7px;border-radius:5px;color:var(--accent)}
+  .pill-btn{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-family:var(--fm);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#f4f8ff;padding:12px 20px;border-radius:9px}
+
+  footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);font-family:var(--fm);font-size:.7rem;color:var(--muted);letter-spacing:.06em}
+  @media(max-width:720px){.tiles,.sw-grid,.specs,.dl-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <img src="assets/logo/axonriedge-lockup-light.svg" alt="AxonRiedge logo">
+    <div class="meta">Brand · Logo<br>v2 — June 2026</div>
+  </header>
+
+  <span class="eyebrow">Identity</span>
+  <h1 style="font-size:clamp(2rem,4vw,2.8rem);margin-top:16px">The AxonRiedge mark.</h1>
+  <p class="lead">A signal hub: a bright central node linked to four edge nodes, ringed by a soft signal halo. It maps directly to what we do — intelligence held at the center, served to the edge, nothing leaving the ring. Below are every export and how to drop them into other tools.</p>
+
+  <!-- MARK -->
+  <section>
+    <div class="sec-title"><span class="n">01</span><h2>Primary mark</h2></div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="stage light"><img class="mk" src="assets/logo/axonriedge-mark-dark.svg" alt="Mark on light"></div>
+        <div class="cap"><span>On light / slate</span><b>mark-dark</b></div>
+      </div>
+      <div class="tile">
+        <div class="stage dark"><img class="mk" src="assets/logo/axonriedge-mark-light.svg" alt="Mark on dark"></div>
+        <div class="cap"><span>On dark / ink</span><b>mark-light</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCKUP -->
+  <section>
+    <div class="sec-title"><span class="n">02</span><h2>Horizontal lockup</h2></div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="stage light"><img class="lk" src="assets/logo/axonriedge-lockup-dark.svg" alt="Lockup on light"></div>
+        <div class="cap"><span>On light / slate</span><b>lockup-dark</b></div>
+      </div>
+      <div class="tile">
+        <div class="stage dark"><img class="lk" src="assets/logo/axonriedge-lockup-light.svg" alt="Lockup on dark"></div>
+        <div class="cap"><span>On dark / ink</span><b>lockup-light</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOR -->
+  <section>
+    <div class="sec-title"><span class="n">03</span><h2>Color</h2></div>
+    <div class="sw-grid">
+      <div class="sw"><div class="chip" style="background:#3d7bff"></div><div class="info"><b>Electric Blue</b><span>#3D7BFF · core / signal</span></div></div>
+      <div class="sw"><div class="chip" style="background:#121927"></div><div class="info"><b>Slate Ink</b><span>#121927 · structure</span></div></div>
+      <div class="sw"><div class="chip" style="background:#dbe2ee"></div><div class="info"><b>Cool Slate</b><span>#DBE2EE · light ground</span></div></div>
+    </div>
+  </section>
+
+  <!-- CLEARSPACE + MIN -->
+  <section>
+    <div class="sec-title"><span class="n">04</span><h2>Clearspace &amp; sizing</h2></div>
+    <div class="specs">
+      <div class="card">
+        <h3>Keep it clear</h3>
+        <p>Leave padding equal to the height of one edge node on all sides. Don't crowd the halo.</p>
+        <div class="clearbox"><img src="assets/logo/axonriedge-lockup-light.svg" alt=""></div>
+      </div>
+      <div class="card">
+        <h3>Minimum size</h3>
+        <p>The mark stays legible down to 20&nbsp;px; the lockup to 120&nbsp;px wide. Below that, use the mark alone.</p>
+        <div class="minrow">
+          <div class="m"><img src="assets/logo/axonriedge-mark-light.svg" style="width:24px;height:24px" alt=""><span>20px</span></div>
+          <div class="m"><img src="assets/logo/axonriedge-mark-light.svg" style="width:40px;height:40px" alt=""><span>40px</span></div>
+          <div class="m"><img src="assets/logo/axonriedge-mark-light.svg" style="width:64px;height:64px" alt=""><span>64px</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOADS -->
+  <section>
+    <div class="sec-title"><span class="n">05</span><h2>Download files</h2></div>
+    <div class="dl-grid">
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark.svg" alt=""></span><div><b>Mark — blue</b><span>transparent</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-mark.svg" download>SVG</a><a href="assets/logo/axonriedge-mark.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-light.svg" alt=""></span><div><b>Mark — light</b><span>for dark bg</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-mark-light.svg" download>SVG</a><a href="assets/logo/axonriedge-mark-light.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-dark.svg" alt=""></span><div><b>Mark — dark</b><span>for light bg</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-mark-dark.svg" download>SVG</a><a href="assets/logo/axonriedge-mark-dark.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/favicon.svg" alt=""></span><div><b>Favicon</b><span>rounded tile</span></div></div>
+        <div class="links"><a href="assets/favicon.svg" download>SVG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-dark.svg" alt=""></span><div><b>Lockup — dark</b><span>for light bg</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-lockup-dark.svg" download>SVG</a><a href="assets/logo/axonriedge-lockup-dark.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-light.svg" alt=""></span><div><b>Lockup — light</b><span>for dark bg</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-lockup-light.svg" download>SVG</a><a href="assets/logo/axonriedge-lockup-light.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-dark.svg" alt=""></span><div><b>Lockup — dark, outlined</b><span>for light bg · no fonts</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-lockup-dark-outlined.svg" download>SVG</a><a href="assets/logo/axonriedge-lockup-dark-outlined.png" download>PNG</a></div>
+      </div>
+      <div class="dl">
+        <div class="name"><span class="px"><img src="assets/logo/axonriedge-mark-light.svg" alt=""></span><div><b>Lockup — light, outlined</b><span>for dark bg · no fonts</span></div></div>
+        <div class="links"><a href="assets/logo/axonriedge-lockup-light-outlined.svg" download>SVG</a><a href="assets/logo/axonriedge-lockup-light-outlined.png" download>PNG</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO -->
+  <section>
+    <div class="sec-title"><span class="n">06</span><h2>How to use these elsewhere</h2></div>
+    <div class="how">
+      <p style="color:var(--text-2)">Two formats cover every use:</p>
+      <ol>
+        <li><b style="color:var(--text)">SVG</b> — infinitely scalable vector. Drop it into Figma, Illustrator, a website (<code>&lt;img src="…svg"&gt;</code>), Google Slides, Keynote, or Office. Never blurs, tiny file size. Use this by default.</li>
+        <li><b style="color:var(--text)">PNG</b> — transparent raster at high resolution. Use where SVG isn't accepted: some email tools, app icon generators, social avatars, quick pastes.</li>
+        <li>Pick the variant by background: <b style="color:var(--text)">-dark</b> on light surfaces, <b style="color:var(--text)">-light</b> on dark surfaces, the <b style="color:var(--text)">blue</b> mark anywhere it reads.</li>
+        <li>For a print shop, use an <b style="color:var(--text)">outlined</b> lockup — the wordmark is already converted to vector shapes, so it renders identically even if the shop doesn't have the Space&nbsp;Grotesk font installed. Brand colors are on this sheet.</li>
+      </ol>
+      <a class="pill-btn" href="index.html">← Back to site</a>
+    </div>
+  </section>
+
+  <footer>© 2026 AxonRiedge — logo &amp; brand mark sheet.</footer>
+
+</div>
+</body>
+</html>

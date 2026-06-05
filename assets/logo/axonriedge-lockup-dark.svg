@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232 48" width="232" height="48" fill="none">
+  <g stroke="#121927" stroke-width="2.2" stroke-linecap="round" opacity="0.5">
+    <line x1="24" y1="24" x2="36" y2="12"></line>
+    <line x1="24" y1="24" x2="12" y2="12"></line>
+    <line x1="24" y1="24" x2="12" y2="36"></line>
+    <line x1="24" y1="24" x2="36" y2="36"></line>
+  </g>
+  <g fill="#121927" opacity="0.78">
+    <circle cx="36" cy="12" r="3.2"></circle>
+    <circle cx="12" cy="12" r="3.2"></circle>
+    <circle cx="12" cy="36" r="3.2"></circle>
+    <circle cx="36" cy="36" r="3.2"></circle>
+  </g>
+  <circle cx="24" cy="24" r="8.5" fill="none" stroke="#3d7bff" stroke-width="1.4" opacity="0.4"></circle>
+  <circle cx="24" cy="24" r="5.5" fill="#3d7bff"></circle>
+  <text x="60" y="31.5" font-family="&#39;Space Grotesk&#39;, &#39;Segoe UI&#39;, system-ui, sans-serif" font-size="25" font-weight="700" letter-spacing="-0.6" fill="#121927">Axon<tspan font-weight="500" fill="#121927" fill-opacity="0.5">Riedge</tspan></text>
+</svg>

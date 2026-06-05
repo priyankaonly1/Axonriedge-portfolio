@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AxonRiedge — On-Premise & Air-Gapped Edge AI Deployment | Private LLMs, Yours</title>
+
+<!-- ==== SEO: edit these in one place (see UPDATE-GUIDE.md §SEO) ==== -->
+<meta name="description" content="AxonRiedge deploys large language models on-premise and air-gapped — private, offline edge AI that never leaves your hardware. Model fine-tuning, custom server boxes, and full-stack AI product engineering.">
+<meta name="keywords" content="on-premise LLM deployment, air-gapped AI, edge AI infrastructure, private LLM, offline AI, data sovereignty, on-device inference, local LLM, model fine-tuning, custom AI hardware, enterprise AI deployment, secure AI">
+<meta name="author" content="AxonRiedge">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://axonriedge.com/">
+
+<!-- Open Graph / social -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AxonRiedge">
+<meta property="og:title" content="AxonRiedge — Own Your AI. On-Premise. Air-Gapped. Yours.">
+<meta property="og:description" content="Deploy powerful LLMs entirely offline on your own hardware. Your data never leaves your premises. Fine-tuning, custom edge hardware, and full-stack AI product engineering.">
+<meta property="og:url" content="https://axonriedge.com/">
+<meta property="og:image" content="https://axonriedge.com/assets/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AxonRiedge — On-Premise Edge AI Deployment">
+<meta name="twitter:description" content="Private, offline LLMs on your hardware. Air-gapped. Sovereign. Yours.">
+<meta name="twitter:image" content="https://axonriedge.com/assets/og-image.jpg">
+
+<meta name="theme-color" content="#090b11">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+<!-- Enable entrance motion only when the page is actually visible (avoids paused-at-hidden blank state) -->
+<script>
+  (function () {
+    var de = document.documentElement;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    function on() { de.classList.add("anim"); }
+    if (!document.hidden) { on(); }
+    else { document.addEventListener("visibilitychange", function v() { if (!document.hidden) { on(); document.removeEventListener("visibilitychange", v); } }); }
+  })();
+</script>
+
+<!-- ==== Structured data: Organization (edit contact/social in UPDATE-GUIDE.md §SEO) ==== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "AxonRiedge",
+  "url": "https://axonriedge.com/",
+  "logo": "https://axonriedge.com/assets/favicon.svg",
+  "description": "On-premise and air-gapped edge AI deployment. Private LLMs, model fine-tuning, custom hardware, and full-stack AI product engineering.",
+  "email": "hello@axonriedge.com",
+  "telephone": "+1-000-000-0000",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[Street address placeholder]",
+    "addressLocality": "[City]",
+    "addressRegion": "[State]",
+    "postalCode": "[ZIP]",
+    "addressCountry": "[Country]"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/axonriedge",
+    "https://x.com/axonriedge",
+    "https://github.com/axonriedge"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What LLM architectures do you support?","acceptedAnswer":{"@type":"Answer","text":"We deploy open-weight transformer families (Llama, Mistral, Qwen, Gemma, Phi and more) as well as proprietary checkpoints you own. We handle quantization, LoRA/QLoRA fine-tuning, and inference runtimes across GGUF, vLLM, and TensorRT-LLM."}},
+    {"@type":"Question","name":"Can you deploy on our existing hardware?","acceptedAnswer":{"@type":"Answer","text":"Yes. We deploy to existing x86, ARM, and GPU infrastructure across Windows and Linux, or supply purpose-built edge boxes when you need them."}},
+    {"@type":"Question","name":"How do you handle model updates offline?","acceptedAnswer":{"@type":"Answer","text":"Updates ship as signed, verifiable artifacts installed through an air-gapped transfer procedure — no internet connection required at any point."}},
+    {"@type":"Question","name":"What is the typical deployment timeline?","acceptedAnswer":{"@type":"Answer","text":"A scoped edge deployment typically runs 3–6 weeks from discovery to validated production, depending on hardware and fine-tuning needs."}},
+    {"@type":"Question","name":"Do you offer ongoing support and maintenance?","acceptedAnswer":{"@type":"Answer","text":"Yes — monitoring, model refresh cycles, and iteration are available as ongoing engagements after deployment."}},
+    {"@type":"Question","name":"Can you build a completely custom AI product for us?","acceptedAnswer":{"@type":"Answer","text":"Absolutely. Beyond deployment we are a full-service product engineering partner, building AI-native products end to end."}}
+  ]
+}
+</script>
+</head>
+<body>
+
+<a href="#main" class="btn-skip" style="position:absolute;left:-9999px;">Skip to content</a>
+<div class="scroll-progress" id="progress"></div>
+<canvas id="particles" aria-hidden="true"></canvas>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="container inner">
+    <a class="brand" href="#top" aria-label="AxonRiedge home">
+      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" fill="none">
+        <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.45">
+          <line x1="24" y1="24" x2="36" y2="12"></line>
+          <line x1="24" y1="24" x2="12" y2="12"></line>
+          <line x1="24" y1="24" x2="12" y2="36"></line>
+          <line x1="24" y1="24" x2="36" y2="36"></line>
+        </g>
+        <g fill="currentColor" opacity="0.7">
+          <circle cx="36" cy="12" r="3.2"></circle>
+          <circle cx="12" cy="12" r="3.2"></circle>
+          <circle cx="12" cy="36" r="3.2"></circle>
+          <circle cx="36" cy="36" r="3.2"></circle>
+        </g>
+        <circle cx="24" cy="24" r="8.5" fill="none" stroke="var(--accent)" stroke-width="1.4" opacity="0.4"></circle>
+        <circle cx="24" cy="24" r="5.5" fill="var(--accent)"></circle>
+      </svg>
+      <span><b>Axon</b><span class="ax">Riedge</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#edge-llm">Platform</a>
+      <a href="#voice">Voice</a>
+      <a href="#process">Process</a>
+      <a href="#services">Services</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#logs">Logs</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Get Started <span class="arr">→</span></a>
+      <button class="nav-burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+  <a href="#edge-llm">Platform</a>
+  <a href="#voice">Voice</a>
+  <a href="#process">Process</a>
+  <a href="#services">Services</a>
+  <a href="#hardware">Hardware</a>
+  <a href="#logs">Logs</a>
+  <a href="#contact">Get Started</a>
+</nav>
+
+<main id="main">
+<span id="top"></span>
+
+<!-- ================= HERO ================= -->
+<section class="hero on-paper" aria-label="Intro">
+  <canvas id="heroNet" aria-hidden="true"></canvas>
+  <span class="reg tl"></span><span class="reg tr"></span><span class="reg bl"></span><span class="reg br"></span>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="hero-pill load d1"><span class="dot"></span>EDGE AI · INFRASTRUCTURE</span>
+      <h1 class="h1 load d2">Own your AI.<br><span class="grad">On-premise.</span> <span id="typed"></span><span class="type-cursor" id="cursor">|</span></h1>
+      <p class="lead load d3">Run powerful large language models entirely offline, on hardware you control. Your data never leaves your premises. We fine-tune, customize, and deploy — or engineer your whole AI product from scratch.</p>
+      <div class="hero-ctas load d4">
+        <a href="#edge-llm" class="btn btn-primary" id="magnetic">Explore Edge Deployment <span class="arr">→</span></a>
+        <a href="#services" class="btn btn-ghost">Build With Us</a>
+      </div>
+      <div class="trust-bar load d5">
+        <span>256-bit Encryption</span>
+        <span>Zero Data Exfiltration</span>
+        <span>On-Premise Only</span>
+        <span>Custom Hardware</span>
+      </div>
+    </div>
+
+    <div class="hero-visual load d4">
+      <div class="edge-unit" role="img" aria-label="An edge AI server unit running a local neural network, status online">
+        <div class="eu-head">
+          <span class="mono">AXN-EDGE / NODE-01</span>
+          <span class="eu-online"><span class="led"></span>System Online</span>
+        </div>
+        <div class="eu-net">
+          <svg viewBox="0 0 360 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <g class="links">
+              <line class="eu-link" x1="60" y1="60" x2="180" y2="40"/>
+              <line class="eu-link" x1="60" y1="60" x2="150" y2="120"/>
+              <line class="eu-link" x1="180" y1="40" x2="300" y2="70"/>
+              <line class="eu-link" x1="150" y1="120" x2="300" y2="70"/>
+              <line class="eu-link" x1="150" y1="120" x2="220" y2="170"/>
+              <line class="eu-link" x1="300" y1="70" x2="220" y2="170"/>
+              <line class="eu-link" x1="60" y1="60" x2="90" y2="170"/>
+              <line class="eu-link" x1="90" y1="170" x2="220" y2="170"/>
+            </g>
+            <g>
+              <circle class="eu-node" cx="60"  cy="60"  r="6" style="animation-delay:0s"/>
+              <circle class="eu-node" cx="180" cy="40"  r="6" style="animation-delay:.4s"/>
+              <circle class="eu-node" cx="300" cy="70"  r="6" style="animation-delay:.8s"/>
+              <circle class="eu-node" cx="150" cy="120" r="6" style="animation-delay:.6s"/>
+              <circle class="eu-node" cx="220" cy="170" r="6" style="animation-delay:1.0s"/>
+              <circle class="eu-node" cx="90"  cy="170" r="6" style="animation-delay:.2s"/>
+            </g>
+          </svg>
+        </div>
+        <div class="eu-foot">
+          <div class="eu-stat"><b id="tok">0</b><span>tokens / sec</span></div>
+          <div class="eu-stat"><b>&lt;20ms</b><span>latency</span></div>
+          <div class="eu-stat"><b>0</b><span>packets out</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT 1 : EDGE LLM ================= -->
+<section class="band band--dark2" id="edge-llm">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Product One — Platform</span>
+      <h2 class="h2">Your AI, on your terms.</h2>
+      <p>End-to-end edge deployment infrastructure for organizations that refuse to compromise on data sovereignty. No cloud round-trips. No third-party servers. No data leaving the building.</p>
+    </div>
+
+    <div class="grid-3 reveal">
+      <article class="feature">
+        <span class="fnum">01</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v6m0 8v6M4.9 4.9l4.2 4.2m5.8 5.8 4.2 4.2M2 12h6m8 0h6M4.9 19.1l4.2-4.2m5.8-5.8 4.2-4.2"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <h3 class="h3">Offline Deployment</h3>
+        <p>Run LLMs entirely disconnected from the internet. Air-gapped environments fully supported, from install to inference.</p>
+      </article>
+      <article class="feature">
+        <span class="fnum">02</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <h3 class="h3">Data Protection</h3>
+        <p>Your proprietary data never touches external servers. Full audit trails and compliance-ready logging built in.</p>
+      </article>
+      <article class="feature">
+        <span class="fnum">03</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/><rect x="8" y="8" width="8" height="8" rx="2"/><path d="m15 9 3-3m-12 12 3-3"/></svg></span>
+        <h3 class="h3">Model Fine-Tuning</h3>
+        <p>We adapt open-weight and proprietary models to your domain, vocabulary, and constraints — LoRA, QLoRA, full fine-tunes.</p>
+      </article>
+      <article class="feature">
+        <span class="fnum">04</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18M3 12h18M3 17h12"/><circle cx="19" cy="17" r="2"/></svg></span>
+        <h3 class="h3">Full Customization</h3>
+        <p>From prompt engineering to architecture tweaks — the model behaves exactly as your workflows require.</p>
+      </article>
+      <article class="feature">
+        <span class="fnum">05</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01"/></svg></span>
+        <h3 class="h3">Custom Server Box</h3>
+        <p>Tailored hardware configurations — from compact edge units to high-performance multi-GPU racks.</p>
+      </article>
+      <article class="feature">
+        <span class="fnum">06</span>
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/><path d="m8 8 2 2-2 2m4 0h3"/></svg></span>
+        <h3 class="h3">Local Machine Deploy</h3>
+        <p>Deploy onto existing infrastructure. Windows, Linux, ARM, x86 — we handle the complexity end to end.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT · VOICE AI ================= -->
+<section class="band band--dark" id="voice">
+  <div class="container voice-grid">
+    <div class="voice-copy reveal">
+      <span class="eyebrow">Product · Voice</span>
+      <h2 class="h2" style="margin:18px 0;">Speech that never leaves the room.</h2>
+      <p class="lead">On-device speech-to-text and text-to-speech, tuned for native Indian languages. Transcribe, converse, and synthesize voice entirely offline — no cloud STT, no audio ever leaving your hardware.</p>
+      <div class="voice-feats">
+        <div class="vfeat">
+          <span class="vi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="3" width="6" height="11" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg></span>
+          <div><h4>Real-time STT</h4><p>Stream meetings, calls, and dictation into accurate transcripts on-device — sub-second latency, fully air-gapped.</p></div>
+        </div>
+        <div class="vfeat">
+          <span class="vi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 9v6h4l5 4V5L8 9H4Z"></path><path d="M17 8a5 5 0 0 1 0 8"></path></svg></span>
+          <div><h4>Natural TTS</h4><p>Lifelike, low-latency speech synthesis with regional voices and adjustable accents — generated locally.</p></div>
+        </div>
+        <div class="vfeat">
+          <span class="vi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"></path></svg></span>
+          <div><h4>12+ Indian languages</h4><p>Hindi, Tamil, Telugu, Bengali, Marathi and more — plus Hinglish code-switching handled natively.</p></div>
+        </div>
+      </div>
+      <div class="lang-chips">
+        <span>हिन्दी</span><span>தமிழ்</span><span>తెలుగు</span><span>বাংলা</span><span>मराठी</span><span>ಕನ್ನಡ</span><span>മലയാളം</span><span>ગુજરાતી</span><span>ਪੰਜਾਬੀ</span><span>ଓଡ଼ିଆ</span><span>اردو</span><span>অসমীয়া</span><span class="more-lang">+ more</span>
+      </div>
+    </div>
+
+    <div class="reveal rd-1">
+      <div class="voice-stage" id="voiceStage">
+        <div class="vs-head"><span class="mono">AXN-VOICE / OFFLINE</span><span class="vs-live"><span class="led"></span>Live · On-Device</span></div>
+        <div class="vs-body">
+          <div class="vs-orb-wrap">
+            <span class="vs-ring"></span><span class="vs-ring"></span><span class="vs-ring"></span>
+            <div class="vs-orb" role="img" aria-label="AI voice assistant speaking">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 10v4M9 6v12M14 8v8M19 11v2"></path></svg>
+            </div>
+          </div>
+          <div class="vs-wave" id="vsWave" aria-hidden="true"></div>
+          <div class="vs-caption">
+            <span class="vs-lang mono" id="voiceLang">हिन्दी · HINDI</span>
+            <p class="vs-text" id="voiceText">नमस्ते! मैं आपकी कैसे मदद कर सकता हूँ?</p>
+          </div>
+        </div>
+        <div class="vs-foot">
+          <span><b>STT</b>speech → text</span>
+          <span><b>TTS</b>text → speech</span>
+          <span><b>0</b>packets out</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section class="band band--dark" id="process">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 class="h2">From use case to production.</h2>
+      <p>A disciplined four-phase engagement. Scoped, validated, and supported.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-track" aria-hidden="true">
+        <svg viewBox="0 0 100 2" preserveAspectRatio="none"><line class="tl-line" x1="0" y1="1" x2="100" y2="1"/><line class="tl-line draw" id="tlDraw" x1="0" y1="1" x2="100" y2="1" pathLength="1"/></svg>
+      </div>
+      <div class="tl-steps">
+        <div class="tl-step"><div class="tl-dot">01</div><span class="mono">Phase 01</span><h3 class="h3">Discover</h3><p>We analyze your use case, data landscape, security posture, and hardware constraints.</p></div>
+        <div class="tl-step"><div class="tl-dot">02</div><span class="mono">Phase 02</span><h3 class="h3">Customize</h3><p>Fine-tune, quantize, and optimize models to run fast on your specific edge hardware.</p></div>
+        <div class="tl-step"><div class="tl-dot">03</div><span class="mono">Phase 03</span><h3 class="h3">Deploy</h3><p>Install, configure, and validate on your local machines or a purpose-built box.</p></div>
+        <div class="tl-step"><div class="tl-dot">04</div><span class="mono">Phase 04</span><h3 class="h3">Support</h3><p>Ongoing monitoring, signed offline updates, and iteration as your needs evolve.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT 2 : SERVICES ================= -->
+<section class="band band--dark2" id="services">
+  <div class="container svc-grid">
+    <div class="reveal">
+      <span class="eyebrow">Product Two — Build</span>
+      <h2 class="h2" style="margin:18px 0;">We build your vision.</h2>
+      <p class="lead">Beyond deployment, AxonRiedge is a full-service product engineering partner. From concept to production, we architect and ship software with AI at its core.</p>
+      <div class="svc-list">
+        <div class="svc-item open">
+          <button class="svc-q" aria-expanded="true">AI-Native Product Development<span class="svc-plus" aria-hidden="true"></span></button>
+          <div class="svc-a"><div><p>We design products where the model is the product — not a bolted-on feature. Architecture, evals, and UX built around inference from day one.</p></div></div>
+        </div>
+        <div class="svc-item">
+          <button class="svc-q" aria-expanded="false">Full-Stack Engineering<span class="svc-plus" aria-hidden="true"></span></button>
+          <div class="svc-a"><div><p>Frontend, backend, data, and infra under one roof. We own the whole stack so handoffs never become bottlenecks.</p></div></div>
+        </div>
+        <div class="svc-item">
+          <button class="svc-q" aria-expanded="false">Cloud-to-Edge Architecture<span class="svc-plus" aria-hidden="true"></span></button>
+          <div class="svc-a"><div><p>Hybrid systems that train in the cloud and serve at the edge — keeping sensitive inference local while scaling where it's safe.</p></div></div>
+        </div>
+        <div class="svc-item">
+          <button class="svc-q" aria-expanded="false">MLOps &amp; Pipeline Design<span class="svc-plus" aria-hidden="true"></span></button>
+          <div class="svc-a"><div><p>Reproducible training, evaluation, and rollout pipelines with versioned models and signed, air-gap-friendly artifacts.</p></div></div>
+        </div>
+        <div class="svc-item">
+          <button class="svc-q" aria-expanded="false">UI/UX for AI Interfaces<span class="svc-plus" aria-hidden="true"></span></button>
+          <div class="svc-a"><div><p>Interfaces that make probabilistic systems feel trustworthy — streaming, citations, guardrails, and graceful failure states.</p></div></div>
+        </div>
+      </div>
+      <a href="#contact" class="btn btn-primary" id="magnetic2" style="margin-top:34px;">Start a Project <span class="arr">→</span></a>
+    </div>
+
+    <div class="reveal rd-2">
+      <div class="factory" id="factory">
+        <div class="term" aria-hidden="true">
+          <div class="ln"><span class="dim">$</span> axn build <span class="k">--target edge</span></div>
+          <div class="ln"><span class="dim">→</span> resolving model graph...</div>
+          <div class="ln"><span class="dim">→</span> quantize <span class="k">q4_k_m</span> · 13B</div>
+          <div class="ln"><span class="ok">✓</span> kernels compiled</div>
+          <div class="ln"><span class="ok">✓</span> evals passed <span class="dim">(241/241)</span></div>
+          <div class="ln"><span class="ok">✓</span> artifact signed</div>
+          <div class="ln"><span class="dim">$</span> axn deploy <span class="k">node-01</span></div>
+          <div class="ln"><span class="ok">●</span> live · <span class="k">offline</span></div>
+        </div>
+        <div class="gear g1" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+        <div class="gear g2" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HARDWARE ================= -->
+<section class="band band--dark" id="hardware">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Deployment Targets</span>
+      <h2 class="h2">Hardware that fits the job.</h2>
+      <p>From a single embedded unit to organization-wide racks — or a build engineered entirely to your spec.</p>
+    </div>
+    <div class="specs-wrap reveal">
+      <table class="specs">
+        <thead><tr><th>Device Type</th><th>Use Case</th><th>Latency</th><th>Models Supported</th></tr></thead>
+        <tbody>
+          <tr><td>Edge Mini · ARM</td><td>Single user, embedded</td><td class="latency">&lt;50ms</td><td>Up to 7B params</td></tr>
+          <tr><td>Edge Pro · x86</td><td>Team, real-time</td><td class="latency">&lt;20ms</td><td>13B – 70B params</td></tr>
+          <tr><td>Enterprise Rack</td><td>Organization-wide</td><td class="latency">&lt;10ms</td><td>70B+, multi-model</td></tr>
+          <tr class="row-custom"><td>Custom Build</td><td>Your specs, your constraints</td><td class="latency">Tuned</td><td>Fully custom</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOCIAL PROOF ================= -->
+<section class="band band--dark2" id="trust">
+  <div class="container">
+    <div class="stats reveal">
+      <div class="stat"><b><span class="count" data-to="50">0</span><span class="u">+</span></b><span>Edge Deployments</span></div>
+      <div class="stat"><b><span class="count" data-to="99.9" data-dec="1">0</span><span class="u">%</span></b><span>Uptime Achieved</span></div>
+      <div class="stat"><b><span class="count" data-to="0">0</span></b><span>Data Breaches</span></div>
+    </div>
+    <div class="tcards">
+      <article class="tcard reveal rd-1">
+        <div class="stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>"Our compliance team signed off in a single meeting. Nothing leaves the building, and the model is faster than the cloud API it replaced."</blockquote>
+        <div class="who"><span class="av" style="background:oklch(0.82 0.12 205)">RM</span><div><b>R. Mehta</b><span>VP Engineering · FinServ Co.</span></div></div>
+      </article>
+      <article class="tcard reveal rd-2">
+        <div class="stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>"AxonRiedge fine-tuned a model on our clinical vocabulary and deployed it air-gapped in under a month. Exactly what we needed."</blockquote>
+        <div class="who"><span class="av" style="background:oklch(0.7 0.13 250)">DC</span><div><b>Dr. Chen</b><span>CMIO · Regional Health</span></div></div>
+      </article>
+      <article class="tcard reveal rd-3">
+        <div class="stars" aria-label="5 out of 5">★★★★★</div>
+        <blockquote>"They didn't just deploy a model — they built the whole product around it. True engineering partner."</blockquote>
+        <div class="who"><span class="av" style="background:oklch(0.78 0.13 150)">JK</span><div><b>J. Kowalski</b><span>Founder · Defense Startup</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGS / ARTICLES ================= -->
+<!-- To add an article: copy one <article class="log"> block. See UPDATE-GUIDE.md §Articles. -->
+<section class="band band--dark" id="logs">
+  <div class="container">
+    <div class="log-head reveal">
+      <div>
+        <span class="eyebrow">Field Logs</span>
+        <h2 class="h2" style="margin-top:18px;">Notes from the edge.</h2>
+      </div>
+      <a href="#" class="btn btn-ghost">All Articles <span class="arr">→</span></a>
+    </div>
+    <div class="logs">
+      <article class="log reveal rd-1">
+        <div class="thumb"><span class="ph">cover image · 16:9</span></div>
+        <div class="meta"><span class="tag">Deployment</span><span>Jun 02, 2026</span><span>6 min</span></div>
+        <h3 class="h3">Running a 70B model on a box that fits under a desk</h3>
+        <p>How quantization, speculative decoding, and the right GPU turn a rack-scale model into a single quiet edge unit.</p>
+        <a href="#" class="more">Read log <span class="arr">→</span></a>
+      </article>
+      <article class="log reveal rd-2">
+        <div class="thumb"><span class="ph">cover image · 16:9</span></div>
+        <div class="meta"><span class="tag">Security</span><span>May 21, 2026</span><span>8 min</span></div>
+        <h3 class="h3">Shipping model updates into an air-gapped network</h3>
+        <p>A practical playbook for signed artifacts, verifiable transfers, and zero outbound packets — start to finish.</p>
+        <a href="#" class="more">Read log <span class="arr">→</span></a>
+      </article>
+      <article class="log reveal rd-3">
+        <div class="thumb"><span class="ph">cover image · 16:9</span></div>
+        <div class="meta"><span class="tag">Fine-Tuning</span><span>May 09, 2026</span><span>5 min</span></div>
+        <h3 class="h3">Teaching a base model your company's vocabulary</h3>
+        <p>What a domain LoRA actually changes, how much data you really need, and how we evaluate before it ever ships.</p>
+        <a href="#" class="more">Read log <span class="arr">→</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="band band--dark2" id="faq">
+  <div class="container">
+    <div class="sec-head reveal" style="text-align:center;margin-inline:auto;">
+      <span class="eyebrow" style="justify-content:center;">FAQ</span>
+      <h2 class="h2" style="margin-top:18px;">Questions, answered.</h2>
+    </div>
+    <div class="faq reveal" id="faq">
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">What LLM architectures do you support?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>Open-weight transformer families — Llama, Mistral, Qwen, Gemma, Phi and more — as well as proprietary checkpoints you own. We handle quantization, LoRA/QLoRA and full fine-tuning, and inference across GGUF, vLLM, and TensorRT-LLM runtimes.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Can you deploy on our existing hardware?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>Yes. We deploy to existing x86, ARM, and GPU infrastructure across Windows and Linux — or supply purpose-built edge boxes when you need dedicated hardware.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">How do you handle model updates offline?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>Updates ship as signed, verifiable artifacts installed through an air-gapped transfer procedure. No internet connection is required at any point in the lifecycle.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">What is the typical deployment timeline?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>A scoped edge deployment typically runs 3–6 weeks from discovery to validated production, depending on hardware availability and fine-tuning depth.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Do you offer ongoing support and maintenance?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>Yes — monitoring, scheduled model-refresh cycles, and continued iteration are available as ongoing engagements after your initial deployment.</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" aria-expanded="false">Can you build a completely custom AI product for us?<span class="faq-plus" aria-hidden="true"></span></button><div class="faq-a"><div><p>Absolutely. Beyond deployment we are a full-service product engineering partner, building AI-native products end to end — from architecture and model to interface and ops.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="band band--dark" id="contact">
+  <div class="container contact-wrap">
+    <div class="contact-aside reveal">
+      <span class="eyebrow">Contact</span>
+      <h2 class="h2">Ready to own your AI?</h2>
+      <p>Get in touch to discuss edge deployment, custom hardware, or your next AI-powered product. We reply within one business day.</p>
+      <div class="contact-meta">
+        <!-- PLACEHOLDER contact details — replace in UPDATE-GUIDE.md §Contact -->
+        <div class="cmeta"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><b>Email</b><span>hello@axonriedge.com</span></div></div>
+        <div class="cmeta"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg></span><div><b>Phone</b><span class="is-ph">+1 (000) 000-0000</span></div></div>
+        <div class="cmeta"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><div><b>Office</b><span class="is-ph">[Street], [City], [Country]</span></div></div>
+        <div class="cmeta"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-10h4v1.5"/><rect x="2" y="9" width="4" height="11"/><circle cx="4" cy="4" r="2"/></svg></span><div><b>LinkedIn</b><span class="is-ph">linkedin.com/company/axonriedge</span></div></div>
+      </div>
+    </div>
+
+    <div class="reveal rd-1">
+      <form class="form" id="contactForm" novalidate>
+        <div class="field row2">
+          <div class="field"><label for="name">Name</label><input class="input" id="name" name="name" type="text" placeholder="Your name" required><span class="err" data-for="name"></span></div>
+          <div class="field"><label for="email">Email</label><input class="input" id="email" name="email" type="email" placeholder="you@company.com" required><span class="err" data-for="email"></span></div>
+        </div>
+        <div class="field"><label for="company">Company</label><input class="input" id="company" name="company" type="text" placeholder="Company name"></div>
+        <div class="field"><label for="interest">Interest</label>
+          <select class="input" id="interest" name="interest">
+            <option>Edge Deployment</option><option>Custom Build</option><option>Both</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="message">Message</label><textarea class="input" id="message" name="message" placeholder="Tell us about your use case, data constraints, and hardware…" required></textarea><span class="err" data-for="message"></span></div>
+        <button type="submit" class="btn btn-primary glow">Send Message <span class="arr">→</span></button>
+        <p class="form-note">Or email <a href="mailto:hello@axonriedge.com" style="color:var(--accent)">hello@axonriedge.com</a> · this demo form validates client-side only.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7"/></svg></div>
+        <h3 class="h3">Message received.</h3>
+        <p style="color:var(--text-2)">Thanks — we'll be in touch within one business day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top" aria-label="AxonRiedge home">
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true" fill="none"><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" opacity="0.45"><line x1="24" y1="24" x2="36" y2="12"></line><line x1="24" y1="24" x2="12" y2="12"></line><line x1="24" y1="24" x2="12" y2="36"></line><line x1="24" y1="24" x2="36" y2="36"></line></g><g fill="currentColor" opacity="0.7"><circle cx="36" cy="12" r="3.2"></circle><circle cx="12" cy="12" r="3.2"></circle><circle cx="12" cy="36" r="3.2"></circle><circle cx="36" cy="36" r="3.2"></circle></g><circle cx="24" cy="24" r="8.5" fill="none" stroke="var(--accent)" stroke-width="1.4" opacity="0.4"></circle><circle cx="24" cy="24" r="5.5" fill="var(--accent)"></circle></svg>
+          <span><b>Axon</b><span class="ax">Riedge</span></span>
+        </a>
+        <p>Sovereign AI for organizations that keep their data where it belongs — on their own hardware.</p>
+        <div class="socials">
+          <a href="https://www.linkedin.com/company/axonriedge" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-10h4v1.5"/><rect x="2" y="9" width="4" height="11"/><circle cx="4" cy="4" r="2"/></svg></a>
+          <a href="https://x.com/axonriedge" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.9l-5.4-7-6.2 7H1.4l8-9.2L1 2h7l4.9 6.5L18.9 2Zm-2.4 18h1.9L7.6 4H5.6l10.9 16Z"/></svg></a>
+          <a href="https://github.com/axonriedge" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Platform</h4><a href="#edge-llm">Edge Deployment</a><a href="#edge-llm">Fine-Tuning</a><a href="#hardware">Custom Hardware</a><a href="#contact">Pricing</a></div>
+      <div class="foot-col"><h4>Services</h4><a href="#services">Product Development</a><a href="#services">Consulting</a><a href="#process">Support</a><a href="#contact">Partnerships</a></div>
+      <div class="foot-col"><h4>Company</h4><a href="#trust">About</a><a href="#contact">Careers</a><a href="#logs">Logs</a><a href="Brand%20-%20Logo.html">Brand &amp; Logo</a><a href="#contact">Contact</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 AxonRiedge. All rights reserved.</span>
+      <div class="foot-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
